@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.westos.ph.dao.cleaningdao.pzydao.CleanersDao">
+    <select id="listAllCleaners" resultType="org.westos.ph.bean.cleaningbean.pzybean.Cleaners">
+        select * from cleaners
+    </select>
+    <insert id="saveCleaner" parameterType="org.westos.ph.bean.cleaningbean.pzybean.Cleaners">
+        <selectKey keyProperty="id" resultType="java.lang.Integer"  order="BEFORE">
+            select ifnull(max(id),0)+1 from subject
+        </selectKey>
+        insert into subject(id,name,phone,evaluation)
+        VALUES (
+        #{id},
+        #{name},
+        #{phone},
+        #{evaluation}
+        )
+    </insert>
+    <update id="updateCleaner" parameterType="org.westos.ph.bean.cleaningbean.pzybean.Cleaners">
+        update cleaners
+        <set>
+            name=#{name},
+            phone=#{phone},
+            evalustion=#{evaluation}
+        </set>
+        <where>
+            id=#{id}
+        </where>
+    </update>
+    <delete id="removeCleaners" parameterType="org.westos.ph.bean.cleaningbean.pzybean.Cleaners">
+        delete from cleaners where id=#{id}
+    </delete>
+</mapper>

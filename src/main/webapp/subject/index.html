@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE-edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>室内保洁</title>
+    <link rel="stylesheet" type="text/css" href="../bootstrap-3.3.7-dist/css/bootstrap.css"/>
+    <script src="../js/vue.js"></script>
+    <script src="../js/axios.min.js"></script>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+</head>
+<body style="background-color: #fff">
+<div id="app" class="container">
+    <div class="row">
+        <header class="header">
+            <div class="col-lg-2">
+                <img src="../pictures/logo.png"/>
+            </div>
+            <div class="col-lg-3">
+
+            </div>
+            <div class="col-lg-3">
+                <a href="#">首页</a>
+                <a href="#">日常保洁</a>
+                <a href="#">电器保洁</a>
+                <a href="#">开荒保洁</a>
+            </div>
+            <div class="col-lg-4">
+                <form class="form-inline">
+                    <label class="control-label">请输入类别名称</label>
+                    <input type="text" class="form-control" placeholder="请输入搜索条件"/>
+                    <button class="btn btn-primary" type="button" v-on:click="refresh">搜索</button>
+                </form>
+            </div>
+        </header>
+        <!--展示保洁人员的表格-->
+        <table class="table">
+            <tr>
+                <th>
+                    保洁人员
+                </th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            <tr v-for="(item,index) in cleanerslist">
+                <td>{{item.id}}</td>
+                <td>{{item.name}}</td>
+                <td>{{item.phone}}</td>
+                <td>{{item.evaluation}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<script>
+    var vue=new Vue({
+        el:'#app',
+        data: {
+            msg: 'hello',
+            cleanerslist: [
+                {
+                id: '1',
+                name: '潘致远',
+                phone:'15502986889',
+                evaluation:'良好'
+                }
+            ],
+            cleaners:{
+                id:'',
+                name:'',
+                phone:'',
+                evaluation:''
+            },
+            listurl:'/cleaners/listcleaners.do'//显示所有数据的url
+        },
+        methods:{
+            //保洁人员的刷新
+            refresh:function(){
+                axios.get(this.listurl).then(function(result){
+                    //将结果给数组
+                    vue.cleanerslist=[];
+                    for(var i=0;i<result.data.length;i++){
+                        //注意vue下的数组操作一定使用push等
+                        vue.cleanerslist.push(result.data[i]);
+                        console.log(data[i]);
+                    }
+                }).catch(function(err){
+                    console.log(err)
+                    alert('加载数据出错')
+                });
+            }
+
+        },
+        mounted:function(){
+            this.refresh();
+            console.log("inited1")
+        }
+    });
+</script>
+</body>
+</html>
